@@ -78,9 +78,9 @@ class Play {
 		}
 		//play続行ならカウント
 		numOfTurn += 1;
-		this.setTurn(this.who(), "Turn");
+		this.setInfo(this.who(), "Turn");
 	}
-	static setTurn(who, progress) {
+	static setInfo(who, progress) {
 		info.innerHTML = ``;
 		let string = ``;
 		switch (progress) {
@@ -97,9 +97,9 @@ class Play {
 	}
 	static result(who, isMatch) {
 		if (isMatch) {
-			this.setTurn(who, "Win");
+			this.setInfo(who, "Win");
 		} else {
-			this.setTurn(who, "Draw");
+			this.setInfo(who, "Draw");
 		}
 		const str = isMatch ? `${who} is Win!` : `draw...`;
 		alert(str);
