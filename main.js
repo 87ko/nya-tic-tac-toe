@@ -1,7 +1,7 @@
 "use strict";
 
-const MARU = "o";
-const BATSU = "x";
+const SENKOU = "O";
+const KOUKOU = "X";
 const WINNING_PATTERN = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -37,7 +37,7 @@ class Play {
 		});
 	}
 	static who() {
-		return numOfTurn % 2 === 0 ? MARU : BATSU;
+		return numOfTurn % 2 === 0 ? SENKOU : KOUKOU;
 	}
 	static clickAction(e, cell) {
 		//勝敗が決まっているor入力済みは無効
@@ -85,8 +85,10 @@ class Play {
 		let string = ``;
 		switch (progress) {
 			case "Turn":
-			case "Win":
 				string = `<p>${who}'s ${progress}</p>`;
+				break;
+			case "Win":
+				string = `<h2>${who}'s ${progress}!!</h2>`;
 				break;
 			case "Draw":
 				string = `<p>Draw...</p>`;
@@ -101,8 +103,7 @@ class Play {
 		} else {
 			this.setInfo(who, "Draw");
 		}
-		const str = isMatch ? `${who} is Win!` : `draw...`;
-		alert(str);
+		// alert(str);
 		return;
 	}
 }
