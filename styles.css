@@ -1,0 +1,52 @@
+body {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.menu {
+	padding-top: 50px;
+}
+
+button {
+	width: 300px;
+	height: 40px;
+	color: white;
+	border: none;
+}
+
+.board {
+	margin: 200 auto;
+	background-color: white;
+	width: 300px;
+	height: 300px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.board-cell {
+	width: calc(100% / 3);
+	border: solid 0.5px #666;
+	cursor: pointer;
+}
+
+.board-cell:hover {
+	background-color: #d1d1d1;
+	opacity: 0.5;
+}
+
+.selected {
+	cursor: not-allowed;
+}
+.selected:hover {
+	background-color: whitesmoke;
+}
