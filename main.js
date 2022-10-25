@@ -16,19 +16,23 @@ const WINNING_PATTERN = [
 const board = document.getElementById("board");
 const cells = document.querySelectorAll(".board-cell");
 const button = document.getElementById("continue");
-const info = document.getElementById("info");
+const playInfo = document.getElementById("playInfo");
+const logInfo = document.getElementById("logInfo");
 button.addEventListener("click", () => Play.start());
 
 let playBoard = new Array(9);
+let logBoard = new Array();
 let isMatch = false;
 let numOfTurn = 0;
 
 class Play {
 	static start() {
+		LogControl.getLog();
+		LogControl.setView();
 		playBoard = new Array(9);
 		isMatch = false;
 		numOfTurn = 0;
-		info.innerHTML = `<p>${this.who()}'s Turn</p>`;
+		playInfo.innerHTML = `<p>${this.who()}'s Turn</p>`;
 		cells.forEach((cell) => {
 			//初期化
 			cell.classList.remove("selected");
@@ -81,7 +85,7 @@ class Play {
 		this.setInfo(this.who(), "Turn");
 	}
 	static setInfo(who, progress) {
-		info.innerHTML = ``;
+		playInfo.innerHTML = ``;
 		let string = ``;
 		switch (progress) {
 			case "Turn":
@@ -94,7 +98,7 @@ class Play {
 				string = `<p>Draw...</p>`;
 				break;
 		}
-		info.innerHTML = string;
+		playInfo.innerHTML = string;
 		return;
 	}
 	static result(who, isMatch) {
@@ -103,8 +107,61 @@ class Play {
 		} else {
 			this.setInfo(who, "Draw");
 		}
-		// alert(str);
+		LogControl.setLog();
 		return;
+	}
+}
+
+class Log {
+	logBoard;
+	time;
+	constructor(board) {
+		this.logBoard = board;
+		this.time = new Date();
+	}
+}
+
+class LogControl {
+	static setView() {
+		//logInfoで過去プレーを選択できる
+		logInfo.innerHTML = "";
+		logBoard.forEach((_log, i) => {
+			const logButton = document.createElement("button");
+			logButton.setAttribute("id", i);
+			logButton.innerHTML = i + 1;
+			logButton.addEventListener("click", () => this.setLogBoard(i));
+			logInfo.append(logButton);
+		});
+	}
+	static setLogBoard(index) {
+		//boardを描画する..
+		cells.forEach((cell) => {
+			const cellIndex = cell.getAttribute("data-index");
+			const selectedCell = logBoard[index][cellIndex];
+			cell.innerHTML = selectedCell;
+			cell.classList.add("selected");
+		});
+		return;
+	}
+
+	static getLog() {
+		const logs = JSON.parse(localStorage.getItem("logs"));
+		//初期化
+		logBoard = new Array();
+		// localStorage.removeItem("logs");
+		if (!logs) return;
+		logs.forEach((log) => {
+			logBoard.push(log.logBoard);
+		});
+		console.log(logBoard);
+		return logBoard;
+	}
+	static setLog() {
+		const newLogs = JSON.parse(localStorage.getItem("logs")) || [];
+		newLogs.push(new Log(playBoard));
+
+		if (newLogs.length > 5) newLogs.shift();
+		localStorage.setItem("logs", JSON.stringify(newLogs));
 	}
 }
 
